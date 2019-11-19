@@ -1,0 +1,201 @@
+{
+	"info": {
+		"_postman_id": "43b5fa44-54ec-49c5-974f-4937d7b2b182",
+		"name": "Scribble",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "account/",
+			"item": [
+				{
+					"name": "sample-api",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "Authentication",
+									"value": "Token {{AUTH_TOKEN}}",
+									"description": "The token of the authenticated user provided in the format \"Token <TOKEN>\"",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "api.localhost/account/sample-api",
+							"host": [
+								"api",
+								"localhost"
+							],
+							"path": [
+								"account",
+								"sample-api"
+							]
+						},
+						"description": "A sample api to test routes protected behind user authentication"
+					},
+					"response": []
+				},
+				{
+					"name": "register",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "username",
+									"value": "{{ACCOUNT_USERNAME}}",
+									"description": "New account username",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "{{ACCOUNT_PASSWORD}}",
+									"description": "New account password",
+									"type": "text"
+								},
+								{
+									"key": "email",
+									"value": "{{ACCOUNT_EMAIL}}",
+									"description": "New account email",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "api.localhost/account/register",
+							"host": [
+								"api",
+								"localhost"
+							],
+							"path": [
+								"account",
+								"register"
+							]
+						},
+						"description": "Register a new user account"
+					},
+					"response": []
+				},
+				{
+					"name": "login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "username",
+									"value": "{{ACCOUNT_USERNAME}}",
+									"description": "Account username",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "{{ACCOUNT_PASSWORD}}",
+									"description": "Account password",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "api.localhost/account/login",
+							"host": [
+								"api",
+								"localhost"
+							],
+							"path": [
+								"account",
+								"login"
+							]
+						},
+						"description": "Login to an existing user account"
+					},
+					"response": []
+				}
+			],
+			"description": "account/ route\n\nThis route contains endpoints for user account access",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "b0f5a52d-6cda-45b3-8b40-7c8774103189",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "7ccfd2b1-5150-43e6-af22-f60abf6985f2",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			],
+			"protocolProfileBehavior": {}
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "0ac83700-65b5-406b-abcb-34bd2038747e",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "a08ea9fc-762a-4e14-be84-149662cff7c3",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"id": "1c1ce476-cb93-49a1-96bb-cca471905ea5",
+			"key": "AUTH_TOKEN",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"id": "644686bb-421e-444d-8e91-0fff08df222b",
+			"key": "ACCOUNT_USERNAME",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"id": "56209784-d13e-4b37-8d00-fe6d49cc5563",
+			"key": "ACCOUNT_PASSWORD",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"id": "ae2ceef2-5b8b-47d4-a44d-668fa3dba41d",
+			"key": "ACCOUNT_EMAIL",
+			"value": "",
+			"type": "string"
+		}
+	],
+	"protocolProfileBehavior": {}
+}
