@@ -25,7 +25,7 @@ SECRET_KEY = '+v*)pfw!@6qvj6%z_y1%&4xbvd1_$#ltxaqg^*q$8x_@oqm$(9'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = int(os.environ.get("DEBUG", default=0))
 
-ALLOWED_HOSTS = ['api.localhost', 'api.scribble.phoward.me', 'api.scribble.accidentallycoded.com'];
+ALLOWED_HOSTS = ['api.localhost', 'api.scribble.phoward.me', 'api.scribble.accidentallycoded.com', 'localhost'];
 
 
 # Application definition
@@ -37,6 +37,13 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    # Third Party
+    'rest_framework',
+    'rest_framework.authtoken',
+
+    # Local
+    'account.apps.AccountConfig',
 ]
 
 MIDDLEWARE = [
@@ -105,7 +112,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'America/New_York'
 
 USE_I18N = True
 
@@ -119,3 +126,12 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticFiles')
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ]
+}
