@@ -8,6 +8,7 @@ verify_ssl = true
 [packages]
 django = ">=2.2.7"
 djangorestframework = ">=3.10"
+django-cors-headers = ">=3.2.0"
 
 [requires]
 python_version = "3.6"
