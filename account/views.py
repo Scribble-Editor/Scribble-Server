@@ -42,7 +42,7 @@ def register(request):
   if username is None or password is None or email is None:
     return Response({'error': 'Please provided username, password, and email'},
       status=HTTP_400_BAD_REQUEST)
-  
+
   # If account with name already exists, return 409 - Conflict
   if User.objects.filter(username=username).exists():
     return Response({'error': 'An account with that name already exists'},
@@ -57,12 +57,30 @@ def register(request):
   if user is None:
     return Response({'error': 'An unexpected error has ocurred while registering account. Try again.'},
       status=HTTP_500_INTERNAL_SERVER_ERROR)
-  
+
   # Get user token and return it
   token, _ = Token.objects.get_or_create(user=user)
   return Response({'token': token.key},
     status=HTTP_200_OK)
 
+@csrf_exempt
+@api_view(['POST'])
+@permission_classes((AllowAny,))
+def logout(request):
+  """
+  Logout of user account
+  """
+  # Get token to delete
+  token = request.data.get('token')
+
+  # Delete token
+
+  try:
+    instance = Token.objects.get(key=token)
+    instance.delete()
+    return Response(status=HTTP_200_OK)
+  except:
+    return Response(status=HTTP_400_BAD_REQUEST)
 
 @csrf_exempt
 @api_view(['GET'])
