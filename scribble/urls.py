@@ -19,4 +19,8 @@ from django.urls import path, include
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('account/', include('account.urls')),
+<<<<<<< Updated upstream
+=======
+    path('compile_system/', include('compile_system.urls'))
+>>>>>>> Stashed changes
 ]
