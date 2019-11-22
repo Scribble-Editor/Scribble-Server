@@ -1,4 +1,4 @@
-from writeFile import getInputPath, getOutputPath
+from .writeFile import getInputPath, getOutputPath
 
 def constructCompileStatement(target, language, fileName):
     
@@ -10,7 +10,7 @@ def constructCompileStatement(target, language, fileName):
     outputFileName = fileName.strip("." + language)
     outputPath = getOutputPath(outputFileName)
 
-    removeCommand = "rm -rf " + inputPath + " " + outputPath 
+    removeCommand = "rm -rf " + inputPath
 
     return (str(command + " " + inputPath + " -o " + outputPath).strip(), removeCommand.strip())
 
