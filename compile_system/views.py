@@ -1,4 +1,5 @@
 import datetime
+import compile_system.statement
 
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny
@@ -24,4 +25,12 @@ def compileScribblet(request):
 
     file.close()
 
-    compileCommnd = determineCompiler(target, language)
+    compileCommnd = determineCompiler(target, language, fileName)
+
+    
+
+@csrf_exempt
+@api_view(['GET'])
+@permission_classes((AllowAny,))
+def getWebhook(request):
+    return ""
