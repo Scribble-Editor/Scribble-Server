@@ -4,4 +4,4 @@ from rest_framework import serializers
 class ScribbletSerializer(serializers.HyperlinkedModelSerializer):
   class Meta:
     model = Scribblet
-    fields = ['user', 'scribbletId', 'name', 'target', 'language', 'content']
+    fields = ['url', 'username', 'scribbletId', 'name', 'target', 'language', 'content']

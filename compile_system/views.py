@@ -1,5 +1,6 @@
 from compile_system.statement import constructCompileStatement, constructInterpretStatement
 from compile_system.writeFile import writeFile
+from compile_system.models import Scribblet
 
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny
@@ -31,6 +32,11 @@ def compileScribblet(request):
 
     url = requests.get("http://scribble-compiler/?command=" + compileCommnd)
 
+    if not url.text:
+      return Response({'error': 'URL not found'}, 
+    status=HTTP_500_INTERNAL_SERVER_ERROR)
+
+
     return Response(url)
 
 @api_view(['POST', 'GET'])
@@ -48,4 +54,8 @@ def interpretScribblet(request):
 
     url = requests.get("http://scribble-compiler/?command=" + interpretCommand)
 
-    return Response(url)
+    if not url.text:
+      return Response({'error': 'URL not found'}, 
+    status=HTTP_500_INTERNAL_SERVER_ERROR)
+
+    return Response(url.text)

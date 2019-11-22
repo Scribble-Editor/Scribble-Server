@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'requests',
     # Local
     'account.apps.AccountConfig',
+    'compile_system'
 ]
 
 MIDDLEWARE = [
