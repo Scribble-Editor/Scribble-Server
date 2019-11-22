@@ -7,6 +7,7 @@ from rest_framework.permissions import AllowAny
 from rest_framework.status import HTTP_400_BAD_REQUEST, HTTP_404_NOT_FOUND, HTTP_200_OK, HTTP_500_INTERNAL_SERVER_ERROR, HTTP_409_CONFLICT
 from rest_framework.response import Response
 
+
 @csrf_exempt
 @api_view(['POST'])
 @permission_classes((AllowAny,))
