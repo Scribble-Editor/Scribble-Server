@@ -57,8 +57,8 @@ def interpretScribblet(request):
 
     url = requests.get("http://scribble-compiler/?command=" + interpretCommand)
 
-    if not url.text:
-      return Response({'error': 'URL not found'}, 
-    status=HTTP_500_INTERNAL_SERVER_ERROR)
+    if url.status_code is not 200:
+      return Response('an error has occurred',
+        status=HTTP_400_BAD_REQUEST)
 
     return Response(url.text)
