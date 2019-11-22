@@ -27,10 +27,4 @@ def compileScribblet(request):
 
     compileCommnd = determineCompiler(target, language, fileName)
 
-    
-
-@csrf_exempt
-@api_view(['GET'])
-@permission_classes((AllowAny,))
-def getWebhook(request):
-    return ""
+    return Response("http://scribble-compiler/?command=" + compileCommnd)
