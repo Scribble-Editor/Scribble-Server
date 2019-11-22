@@ -43,7 +43,6 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'corsheaders',
     'requests',
-
     # Local
     'account.apps.AccountConfig',
 ]

@@ -29,8 +29,7 @@ def compileScribblet(request):
     fileName = writeFile(name, target, language, content)
     compileCommnd = constructCompileStatement(target, language, fileName)
 
-    url = "hi"
-    #url = requests.get("http://scribble-compiler/?command=" + compileCommnd)
+    url = requests.get("http://scribble-compiler/?command=" + compileCommnd)
 
     return Response(url)
 

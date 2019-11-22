@@ -3,7 +3,7 @@ import datetime
 def writeFile(name, target, language, content):
     time = datetime.datetime.now()
 
-    name.strip()
+    name.strip() #This should protect the compiler container from 
 
     fileName = name + "_" + target + "_src_" + time.strftime("%d-%m-%y_%H%M%S") + "." + language
     file = open(fileName, "+w")
