@@ -44,8 +44,8 @@ def interpretScribblet(request):
       status=HTTP_400_BAD_REQUEST)
 
     fileName = writeFile(name, target, language, content)
-    compileCommnd = constructInterpretStatement(language, fileName)
+    interpretCommand = constructInterpretStatement(language, fileName)
 
-    url = requests.get("http://scribble-compiler/?command=" + compileCommnd)
+    url = requests.get("http://scribble-compiler/?command=" + interpretCommand)
 
     return Response(url)
