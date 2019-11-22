@@ -1,4 +1,3 @@
-<<<<<<< Updated upstream
 [[source]]
 name = "pypi"
 url = "https://pypi.org/simple"
@@ -13,18 +12,3 @@ django-cors-headers = ">=3.2.0"
 
 [requires]
 python_version = "3.6"
-=======
-[[source]]
-name = "pypi"
-url = "https://pypi.org/simple"
-verify_ssl = true
-
-[dev-packages]
-
-[packages]
-django = ">=2.2.7"
-djangorestframework = ">=3.10"
-
-[requires]
-python_version = "3.6"
->>>>>>> Stashed changes
