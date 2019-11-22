@@ -12,6 +12,7 @@ from rest_framework.response import Response
 import requests   
 from urllib.parse import quote
 
+#Generalized request data extraction method. Returns a tuple with the desired information.
 def getItemsFromReq(request):
   
     name = request.data.get("name") #Scribblet name
@@ -21,12 +22,17 @@ def getItemsFromReq(request):
 
     return (name, target, language, content)
 
+## @package scribbleCompileSystem
+#
+# compileScribblet - obtains a POST request and gathers a name, target (architecture), programming language, code.
+# Writes code to a file, creates compile and cleanup commands, and provides a path to a webhook. 
+#
 @api_view(['POST'])
 @permission_classes((AllowAny,))
 def compileScribblet(request):
     
     (name, target, language, content) = getItemsFromReq(request)
-    print("I made it here!")
+    
     if not name or not target or not language or not content:
         return Response({'error': 'Missing attribtes, did you forget to set something?'},
       status=HTTP_400_BAD_REQUEST)
@@ -49,6 +55,11 @@ def compileScribblet(request):
 
     return Response(url)
 
+## @package scribbleCompileSystem
+#
+# interpretScribblet - obtains a POST request and gathers a name, programming language, code.
+# Writes code to a file, creates compile and cleanup commands, and provides a path to a webhook. 
+#
 @api_view(['POST'])
 @permission_classes((AllowAny,))
 def interpretScribblet(request):    
