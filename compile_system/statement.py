@@ -1,4 +1,4 @@
-def constructStatement(target, language, fileName):
+def constructCompileStatement(target, language, fileName):
     
     command = determineCompiler(target, language) + determineTarget(target)
     staticLinkParam = determineStaticLibraryLink(language)
@@ -8,6 +8,14 @@ def constructStatement(target, language, fileName):
     outputFileName.strip(language)
 
     return command + (" " + staticLinkParam if not staticLinkParam else "") + " " + fileName + " -o " + outputFileName
+
+def constructInterpretStatement(language, fileName):
+
+    command = determineInterpreter(language);
+
+    #Not sure if we should be using the booleanity (?) of python. 
+    #But if the language isnt on the approved list, this should prevent that from happening.
+    return (command if not command else "") + " " + fileName
 
 def determineCompiler(target, language):
 
@@ -24,6 +32,16 @@ def determineCompiler(target, language):
         return "gcc"
     
     else:
+        return ""
+
+def determineInterpreter(language):
+    if language is "py":
+        return "python3 -u"
+
+    elif language is "rb":
+        return "ruby"
+
+    else: 
         return ""
 
 def determineTarget(target):
@@ -47,5 +65,3 @@ def determineStaticLibraryLink(language):
     
     else:
         return ""
-
-print (constructStatement("win64", "cpp", "hello.cpp"))
