@@ -3,6 +3,7 @@ import json
 
 from django.shortcuts import get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
+from django.core import serializers
 from rest_framework.authtoken.models import Token
 from rest_framework.decorators import api_view
 from rest_framework.permissions import AllowAny
@@ -238,7 +239,7 @@ def find(request):
   # Validate columns is proper json
   try:
     selectedColumns = []
-    if columns is not '*':
+    if columns != '*':
       selectedColumns = json.loads(columns)
     else:
       selectedColumns = json.loads(database.columns)
@@ -256,3 +257,12 @@ def find(request):
   rows = findRow(database, selectedColumns, comparisonColumn, comparison, operand)
 
   return Response(rows, status=HTTP_200_OK)
+
+@csrf_exempt
+@api_view(['GET', 'POST'])
+def listAll(request):
+  user = request.user.username
+
+  databases = Database.objects.filter(user=user).all()
+  databases_json = serializers.serialize('json', databases)
+  return Response(databases_json, content_type='application/json', status=HTTP_200_OK)
