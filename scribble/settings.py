@@ -45,6 +45,7 @@ INSTALLED_APPS = [
 
     # Local
     'account.apps.AccountConfig',
+    'user_databases.apps.UserDatabasesConfig'
 ]
 
 MIDDLEWARE = [
