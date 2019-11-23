@@ -10,17 +10,18 @@ from rest_framework.status import HTTP_400_BAD_REQUEST, HTTP_404_NOT_FOUND, HTTP
 from rest_framework.response import Response
 
 import requests   
+from urllib.parse import quote
 
 def getItemsFromReq(request):
   
-    name = request.get("name") #Scribblet name
-    target = request.get("target") #Operating System/Architecture (e.g. Win64, Win32, Linux)
-    language = request.get("lang") #Language in the form of file extension (e.g. cpp, c, rb, py)
-    content = request.get("content") #Code
+    name = request.data.get("name") #Scribblet name
+    target = request.data.get("target") #Operating System/Architecture (e.g. Win64, Win32, Linux)
+    language = request.data.get("lang") #Language in the form of file extension (e.g. cpp, c, rb, py)
+    content = request.data.get("content") #Code
 
     return (name, target, language, content)
 
-@api_view(['POST', 'GET'])
+@api_view(['POST'])
 @permission_classes((AllowAny,))
 def compileScribblet(request):
     
@@ -30,19 +31,24 @@ def compileScribblet(request):
         return Response({'error': 'Missing attribtes, did you forget to set something?'},
       status=HTTP_400_BAD_REQUEST)
 
-    fileName = writeFile(name, target, language, content)
+    try:
+      fileName = writeFile(name, target, language, content)
+    except:
+      return Response('Error writing file',
+        status=HTTP_400_BAD_REQUEST)
+
     compileCommnd = constructCompileStatement(target, language, fileName)
+    compileCommnd = quote(compileCommnd)
 
     url = requests.get("http://scribble-compiler/?command=" + compileCommnd)
 
-    if not url.text:
-      return Response({'error': 'URL not found'}, 
-    status=HTTP_500_INTERNAL_SERVER_ERROR)
-
+    if url.status_code != 200:
+      return Response('Error performing request',
+        status=HTTP_400_BAD_REQUEST)
 
     return Response(url)
 
-@api_view(['POST', 'GET'])
+@api_view(['POST'])
 @permission_classes((AllowAny,))
 def interpretScribblet(request):    
 
@@ -57,8 +63,8 @@ def interpretScribblet(request):
 
     url = requests.get("http://scribble-compiler/?command=" + interpretCommand)
 
-    if url.status_code is not 200:
+    if url.status_code != 200:
       return Response('an error has occurred',
         status=HTTP_400_BAD_REQUEST)
 
-    return Response(url.text)
+    return Response(str(url.text))

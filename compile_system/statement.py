@@ -1,13 +1,12 @@
 def constructCompileStatement(target, language, fileName):
     
     command = determineCompiler(target, language) + determineTarget(target)
-    staticLinkParam = determineStaticLibraryLink(language)
+    staticLinkParam = determineStaticLibraryLink(target, language)
 
     outputFileName = fileName
-    outputFileName.strip(".")
-    outputFileName.strip(language)
+    outputFileName = outputFileName.strip("." + language)
 
-    return command + (" " + staticLinkParam if not staticLinkParam else "") + " " + fileName + " -o " + outputFileName
+    return str(command + " " + fileName + " -o " + outputFileName).strip()
 
 def constructInterpretStatement(language, fileName):
 
@@ -19,26 +18,26 @@ def constructInterpretStatement(language, fileName):
 
 def determineCompiler(target, language):
 
-    if (language is "cpp") and ("win" in target):
+    if (language == "cpp") and ("win" in target):
         return "g++-mingw-"
 
-    elif (language is "c") and ("win" in target):
+    elif (language == "c") and ("win" in target):
         return "gcc-mingw-"
 
-    elif (language is "cpp") and ("linux" is target):
+    elif (language == "cpp") and ("linux" in target):
         return "g++"
 
-    elif (language is "c") and ("linux" is target):
+    elif (language == "c") and ("linux" in target):
         return "gcc"
     
     else:
         return ""
 
 def determineInterpreter(language):
-    if language is "py":
+    if language == "py":
         return "python3 -u"
 
-    elif language is "rb":
+    elif language == "rb":
         return "ruby"
 
     else: 
@@ -46,21 +45,23 @@ def determineInterpreter(language):
 
 def determineTarget(target):
 
-    if target is "win64":
+    if target == "win64":
         return "w64-x86-64"
 
-    elif target is "win32":
-        return "w64-i686 -"
+    elif target == "win32":
+        return "w64-i686"
 
     else:
         return ""
 
-def determineStaticLibraryLink(language):
+def determineStaticLibraryLink(target, language):
+    if target == "linux":
+        return ""
 
-    if language is "cpp":
+    if language == "cpp":
         return "-static-libstdc++"
     
-    elif language is "c":
+    elif language == "c":
         return "-static-libstdc"
     
     else:
