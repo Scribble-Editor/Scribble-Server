@@ -1,4 +1,4 @@
-FROM python:alpine
+FROM python:3.6-alpine
 
 WORKDIR /app
 
@@ -12,4 +12,4 @@ RUN pip install pipenv
 COPY ./Pipfile /app/Pipfile
 RUN pipenv install --skip-lock --system --dev
 
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+CMD ["./start.sh"]
