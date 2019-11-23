@@ -39,7 +39,7 @@ def create(request):
     user=user,
     created_on=now,
     last_modified=now,
-    columns=str(columns),
+    columns=str(columns).replace('\'', '"'),
     rows='[]'
   )
   newDatabase.save()
