@@ -1,5 +1,5 @@
 from compile_system.statement import constructCompileStatement, constructInterpretStatement
-from compile_system.writeFile import writeFile
+from compile_system.writeFile import writeFile, getOutputPath
 from compile_system.models import Scribblet
 
 from django.views.decorators.csrf import csrf_exempt
@@ -47,7 +47,9 @@ def compileScribblet(request):
     compileCommnd = quote(compileCommnd)
     cleanupCommand = quote(cleanupCommand)
 
-    url = requests.get("http://scribble-compiler/?command=" + compileCommnd + "&cleanup=" + cleanupCommand)
+    downloadPath = str(getOutputPath(fileName.strip("." + language))).strip()
+
+    url = requests.get("http://scribble-compiler/?command=" + compileCommnd + "&cleanup=" + cleanupCommand + "&download=" + downloadPath)
 
     if url.status_code != 200:
       return Response('Error performing request',
