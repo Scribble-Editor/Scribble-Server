@@ -37,10 +37,11 @@ def compileScribblet(request):
       return Response('Error writing file',
         status=HTTP_400_BAD_REQUEST)
 
-    compileCommnd = constructCompileStatement(target, language, fileName)
+    compileCommnd, cleanupCommand = constructCompileStatement(target, language, fileName)
     compileCommnd = quote(compileCommnd)
+    cleanupCommand = quote(cleanupCommand)
 
-    url = requests.get("http://scribble-compiler/?command=" + compileCommnd)
+    url = requests.get("http://scribble-compiler/?command=" + compileCommnd + "&cleanup=" + cleanupCommand)
 
     if url.status_code != 200:
       return Response('Error performing request',
@@ -59,9 +60,11 @@ def interpretScribblet(request):
       status=HTTP_400_BAD_REQUEST)
 
     fileName = writeFile(name, target, language, content)
-    interpretCommand = constructInterpretStatement(language, fileName)
+    interpretCommand, cleanupCommand = constructInterpretStatement(language, fileName)
+    interpretCommand = quote(interpretCommand)
+    cleanupCommand = quote(cleanupCommand)
 
-    url = requests.get("http://scribble-compiler/?command=" + interpretCommand)
+    url = requests.get("http://scribble-compiler/?command=" + interpretCommand + "&cleanup=" + cleanupCommand)
 
     if url.status_code != 200:
       return Response('an error has occurred',

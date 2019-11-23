@@ -6,15 +6,19 @@ def constructCompileStatement(target, language, fileName):
     outputFileName = fileName
     outputFileName = outputFileName.strip("." + language)
 
-    return str(command + " " + fileName + " -o " + outputFileName).strip()
+    removeCommand = "rm -rf " + fileName
+
+    return (str(command + " " + fileName + " -o " + outputFileName).strip(), removeCommand.strip())
 
 def constructInterpretStatement(language, fileName):
 
     command = determineInterpreter(language);
+    removeCommand = "rm " + fileName
 
     #Not sure if we should be using the booleanity (?) of python. 
     #But if the language isnt on the approved list, this should prevent that from happening.
-    return (command if not command else "") + " " + fileName
+    #Ignore the lisp-like nature of the tuple below. It doesn't exist if you can't see it, right?
+    return (str((command if not command else "") + " " + fileName).strip(), removeCommand.strip())
 
 def determineCompiler(target, language):
 
