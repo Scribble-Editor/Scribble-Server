@@ -1,24 +1,30 @@
+from .writeFile import getInputPath, getOutputPath
+
 def constructCompileStatement(target, language, fileName):
     
     command = determineCompiler(target, language) + determineTarget(target)
     staticLinkParam = determineStaticLibraryLink(target, language)
 
-    outputFileName = fileName
-    outputFileName = outputFileName.strip("." + language)
+    inputPath = getInputPath(fileName)
 
-    removeCommand = "rm -rf " + fileName
+    outputFileName = fileName.strip("." + language)
+    outputPath = getOutputPath(outputFileName)
 
-    return (str(command + " " + fileName + " -o " + outputFileName).strip(), removeCommand.strip())
+    removeCommand = "rm -rf " + inputPath
+
+    return (str(command + " " + inputPath + " -o " + outputPath).strip(), removeCommand.strip())
 
 def constructInterpretStatement(language, fileName):
 
     command = determineInterpreter(language);
-    removeCommand = "rm " + fileName
+
+    inputPath = getInputPath(fileName)
+    removeCommand = "rm " + inputPath
 
     #Not sure if we should be using the booleanity (?) of python. 
     #But if the language isnt on the approved list, this should prevent that from happening.
     #Ignore the lisp-like nature of the tuple below. It doesn't exist if you can't see it, right?
-    return (str((command if not command else "") + " " + fileName).strip(), removeCommand.strip())
+    return (str((command if not command else "") + " " + inputPath).strip(), removeCommand.strip())
 
 def determineCompiler(target, language):
 
@@ -63,10 +69,12 @@ def determineStaticLibraryLink(target, language):
         return ""
 
     if language == "cpp":
-        return "-static-libstdc++"
+        return " -static-libstdc++"
     
     elif language == "c":
-        return "-static-libstdc"
+        return " -static-libstdc"
     
     else:
         return ""
+
+print(constructCompileStatement("linux", "cpp", "hello.cpp"))
