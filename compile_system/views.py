@@ -50,8 +50,6 @@ def compileScribblet(request):
 
     downloadPath = str(fileName.strip("." + language)).strip()
 
-    # return Response("http://scribble-compiler/?command=" + compileCommnd + "&cleanup=" + cleanupCommand + "&download=" + downloadPath)
-
     url = requests.get("http://scribble-compiler/?command=" + compileCommnd + "&cleanup=" + cleanupCommand + "&download=/" + downloadPath)
 
     if url.status_code != 200:
