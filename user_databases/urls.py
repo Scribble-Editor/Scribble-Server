@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import create, delete, insert, remove, find, listAll
+from .views import create, delete, insert, remove, find, listAll, changeSecret
 
 urlpatterns = [
   path('create', create),
@@ -7,5 +7,6 @@ urlpatterns = [
   path('insert', insert),
   path('remove', remove),
   path('find', find),
-  path('all', listAll)
+  path('all', listAll),
+  path('change-secret', changeSecret)
 ]
