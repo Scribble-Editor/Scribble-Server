@@ -1,8 +1,12 @@
 from .writeFile import getInputPath, getOutputPath
 
+#x86_64-w64-mingw32-g++
+#i686-w64-mingw32-g++ is 32
+
+
 def constructCompileStatement(target, language, fileName):
     
-    command = determineCompiler(target, language) + determineTarget(target)
+    command = determineTarget(target) + determineCompiler(target, language)
     staticLinkParam = determineStaticLibraryLink(target, language)
 
     inputPath = getInputPath(fileName)
@@ -29,10 +33,10 @@ def constructInterpretStatement(language, fileName):
 def determineCompiler(target, language):
 
     if (language == "cpp") and ("win" in target):
-        return "g++-mingw-"
+        return "mingw32-g++"
 
     elif (language == "c") and ("win" in target):
-        return "gcc-mingw-"
+        return "mingw32-gcc"
 
     elif (language == "cpp") and ("linux" in target):
         return "g++"
@@ -56,10 +60,10 @@ def determineInterpreter(language):
 def determineTarget(target):
 
     if target == "win64":
-        return "w64-x86-64"
+        return "x86_64-w64-"
 
     elif target == "win32":
-        return "w64-i686"
+        return "i686-w64-"
 
     else:
         return ""
