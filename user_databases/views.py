@@ -224,6 +224,7 @@ def find(request):
   comparisonColumn = request.data.get('comparisonColumn')
   comparison = request.data.get('comparison')
   operand = request.data.get('operand')
+  secret = request.data.get('secret')
 
   # Validate database_id
   if database_id is None:
@@ -236,9 +237,12 @@ def find(request):
   except:
     return Response('database_id does not correspond to any database owned by this user',
       status=HTTP_400_BAD_REQUEST)
-  if database.user != user:
-    return Response('database_id does not correspond to any database owned by this user',
-      status=HTTP_400_BAD_REQUEST)
+  if database.user != user and database.secret != secret:
+    if database.user != user:
+      return Response('database_id does not correspond to any database owned by this user',
+        status=HTTP_400_BAD_REQUEST)
+    else:
+      return Response('secret does not correspond to database')
   
   # Validate columns
   if columns is None:
