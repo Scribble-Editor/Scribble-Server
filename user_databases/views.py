@@ -5,7 +5,7 @@ from django.shortcuts import get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
 from django.core import serializers
 from rest_framework.authtoken.models import Token
-from rest_framework.decorators import api_view, authentication_classes, permission_classes
+from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny
 from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST, HTTP_500_INTERNAL_SERVER_ERROR
 from rest_framework.response import Response
@@ -79,14 +79,14 @@ def delete(request):
   return Response(status=HTTP_200_OK)
 
 @csrf_exempt
-@authentication_classes([])
-@permission_classes([])
 @api_view(['POST'])
+@permission_classes([AllowAny])
 def insert(request):
   # Get data from POST body
   user = request.user.username
   database_id = request.data.get('database_id')
   row = request.data.get('row')
+  secret = request.data.get('secret')
 
   # Validate database_id
   if database_id is None:
@@ -107,9 +107,12 @@ def insert(request):
   except:
     return Response('database_id does not correspond to any database owned by this user',
       status=HTTP_400_BAD_REQUEST)
-  if database.user != user:
-    return Response('database_id does not correspond to any database owned by this user',
-      status=HTTP_400_BAD_REQUEST)
+  if database.user != user and database.secret != secret:
+    if database.user != user:
+      return Response('database_id does not correspond to any database owned by this user',
+        status=HTTP_400_BAD_REQUEST)
+    else:
+      return Response('secret does not correspond to database')
   
   # Validate new row follows database table columns
   try:
@@ -136,9 +139,8 @@ def insert(request):
   return Response(status=HTTP_200_OK)
 
 @csrf_exempt
-@authentication_classes([])
-@permission_classes([])
 @api_view(['POST'])
+@permission_classes([AllowAny])
 def remove(request):
   # Get data from POST body
   user = request.user.username
@@ -210,9 +212,8 @@ def remove(request):
   return Response(status=HTTP_200_OK)
 
 @csrf_exempt
-@authentication_classes([])
-@permission_classes([])
 @api_view(['POST'])
+@permission_classes([AllowAny])
 def find(request):
   # Get data from POST body
   user = request.user.username
