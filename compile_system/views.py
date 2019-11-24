@@ -27,6 +27,7 @@ def getItemsFromReq(request):
 # compileScribblet - obtains a POST request and gathers a name, target (architecture), programming language, code.
 # Writes code to a file, creates compile and cleanup commands, and provides a path to a webhook. 
 #
+@csrf_exempt
 @api_view(['POST'])
 @permission_classes((AllowAny,))
 def compileScribblet(request):
@@ -47,9 +48,9 @@ def compileScribblet(request):
     compileCommnd = quote(compileCommnd)
     cleanupCommand = quote(cleanupCommand)
 
-    downloadPath = str(getOutputPath(fileName.strip("." + language))).strip()
+    downloadPath = str(fileName.strip("." + language)).strip()
 
-    url = requests.get("http://scribble-compiler/?command=" + compileCommnd + "&cleanup=" + cleanupCommand + "&download=" + downloadPath)
+    url = requests.get("http://scribble-compiler/?command=" + compileCommnd + "&cleanup=" + cleanupCommand + "&download=/" + downloadPath)
 
     if url.status_code != 200:
       return Response('Error performing request',
@@ -62,6 +63,7 @@ def compileScribblet(request):
 # interpretScribblet - obtains a POST request and gathers a name, programming language, code.
 # Writes code to a file, creates compile and cleanup commands, and provides a path to a webhook. 
 #
+@csrf_exempt
 @api_view(['POST'])
 @permission_classes((AllowAny,))
 def interpretScribblet(request):    
