@@ -1,9 +1,5 @@
 from .writeFile import getInputPath, getOutputPath
 
-#x86_64-w64-mingw32-g++
-#i686-w64-mingw32-g++ is 32
-
-
 def constructCompileStatement(target, language, fileName):
     
     command = determineTarget(target) + determineCompiler(target, language)
@@ -11,7 +7,9 @@ def constructCompileStatement(target, language, fileName):
 
     inputPath = getInputPath(fileName)
 
-    outputFileName = fileName.strip("." + language)
+    outputFileName = fileName
+    outputFileName = outputFileName.strip("." + language)
+
     outputPath = getOutputPath(outputFileName)
 
     removeCommand = "rm -rf " + inputPath
@@ -80,5 +78,3 @@ def determineStaticLibraryLink(target, language):
     
     else:
         return ""
-
-print(constructCompileStatement("linux", "cpp", "hello.cpp"))
