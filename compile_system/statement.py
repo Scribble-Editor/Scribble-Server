@@ -26,7 +26,7 @@ def constructInterpretStatement(language, fileName):
     #Not sure if we should be using the booleanity (?) of python. 
     #But if the language isnt on the approved list, this should prevent that from happening.
     #Ignore the lisp-like nature of the tuple below. It doesn't exist if you can't see it, right?
-    return (str((command if not command else "") + " " + inputPath).strip(), removeCommand.strip())
+    return (str(determineInterpreter(language) + " " + inputPath).strip(), removeCommand.strip())
 
 def determineCompiler(target, language):
 
@@ -46,11 +46,14 @@ def determineCompiler(target, language):
         return ""
 
 def determineInterpreter(language):
-    if language == "py":
+    if language == "python":
         return "python3 -u"
 
-    elif language == "rb":
+    elif language == "ruby":
         return "ruby"
+
+    elif language == "js":
+        return "node"
 
     else: 
         return ""
@@ -74,7 +77,7 @@ def determineStaticLibraryLink(target, language):
         return " -static-libstdc++"
     
     elif language == "c":
-        return " -static-libstdc"
+        return " -static-libgcc"
     
     else:
         return ""

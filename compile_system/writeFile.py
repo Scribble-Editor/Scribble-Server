@@ -7,7 +7,7 @@ def writeFile(name, target, language, content):
 
     name = name.strip() #This should protect the compiler container from 
 
-    fileName =  name + "_" + target + "_src_" + time.strftime("%d-%m-%y_%H%M%S") + "." + language
+    fileName =  name + "_" + target + "_src_" + time.strftime("%d-%m-%y_%H%M%S") + "." + determineFileExt(language)
 
     file = open(getInputPath(fileName), "+w")
 
@@ -22,6 +22,16 @@ def writeFile(name, target, language, content):
     file.close()
 
     return fileName
+
+def determineFileExt(language):
+    if language == "c" or language == "cpp":
+        return language
+    elif language == "python":
+        return "py"
+    elif language == "ruby":
+        return "rb"
+    elif language == "node":
+        return "js"
 
 def getInputPath(fileName):
     path = getcwd() + '/src/'
