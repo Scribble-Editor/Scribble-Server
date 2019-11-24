@@ -5,13 +5,13 @@ from django.shortcuts import get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
 from django.core import serializers
 from rest_framework.authtoken.models import Token
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, authentication_classes, permission_classes
 from rest_framework.permissions import AllowAny
 from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST, HTTP_500_INTERNAL_SERVER_ERROR
 from rest_framework.response import Response
 
 from .models import Database
-from .mixins import Comparison, findRow
+from .mixins import Comparison, findRow, generateSecret
 
 @csrf_exempt
 @api_view(['POST'])
@@ -79,6 +79,8 @@ def delete(request):
   return Response(status=HTTP_200_OK)
 
 @csrf_exempt
+@authentication_classes([])
+@permission_classes([])
 @api_view(['POST'])
 def insert(request):
   # Get data from POST body
@@ -134,6 +136,8 @@ def insert(request):
   return Response(status=HTTP_200_OK)
 
 @csrf_exempt
+@authentication_classes([])
+@permission_classes([])
 @api_view(['POST'])
 def remove(request):
   # Get data from POST body
@@ -206,6 +210,8 @@ def remove(request):
   return Response(status=HTTP_200_OK)
 
 @csrf_exempt
+@authentication_classes([])
+@permission_classes([])
 @api_view(['POST'])
 def find(request):
   # Get data from POST body
@@ -266,3 +272,28 @@ def listAll(request):
   databases = Database.objects.filter(user=user).all()
   databases_json = serializers.serialize('json', databases)
   return Response(databases_json, content_type='application/json', status=HTTP_200_OK)
+
+@csrf_exempt
+@api_view(['POST'])
+def changeSecret(request):
+  # Get data from POST body
+  user = request.user.username
+  database_id = request.data.get('database_id')
+
+  # Validate database_id
+  if database_id is None:
+    return Response('database_id field not provided.',
+      status=HTTP_400_BAD_REQUEST)
+
+  # Validate database_id exists under authenticated user
+  try:
+    database = Database.objects.get(id=database_id)
+  except:
+    return Response('database_id does not correspond to any database owned by this user',
+      status=HTTP_400_BAD_REQUEST)
+  
+  # Change secret
+  database.secret = generateSecret()
+  database.save()
+
+  return Response(database.secret, status=HTTP_200_OK)

@@ -1,5 +1,7 @@
 from django.db import models
 
+from .mixins import generateSecret
+
 class Database(models.Model):
   def __str__(self):
     return self.user + '_' + str(self.id)
@@ -18,3 +20,6 @@ class Database(models.Model):
 
   # Stored as an array of objects with members for each column
   rows = models.TextField()
+
+  # Secret acts as authentication for database various endpoints
+  secret = models.TextField(unique=True, default=generateSecret)

@@ -1,5 +1,6 @@
 from enum import Enum
 from json import loads
+from uuid import uuid4
 
 class Comparison(Enum):
   IS_EQUAL_TO = 0
@@ -84,3 +85,6 @@ def findRow(database, columns, comparisonColumn=None, comparison=None, operand=N
 
   except:
     raise Exception('error performing request')
+
+def generateSecret():
+  return uuid4().hex
