@@ -24,7 +24,7 @@ SECRET_KEY = '+v*)pfw!@6qvj6%z_y1%&4xbvd1_$#ltxaqg^*q$8x_@oqm$(9'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = int(os.environ.get("DEBUG", default=0))
 
-ALLOWED_HOSTS = ['api.localhost', 'api.scribble.phoward.me', 'api.scribble.accidentallycoded.com', 'localhost'];
+ALLOWED_HOSTS = ['api.localhost', 'api.scribble.phoward.me', 'api.scribble.accidentallycoded.com', 'localhost', 'scribble-server'];
 
 
 # Application definition
